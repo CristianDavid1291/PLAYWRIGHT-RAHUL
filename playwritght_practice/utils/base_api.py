@@ -3,17 +3,17 @@ orders_payload = {"orders":[{"country":"Colombia","productOrderedId":"67a8dde5c0
 
 class APIUtils:
 
-    def get_token(self, playwright: Playwright):
+    def get_token(self, playwright: Playwright, user_data):
         api_request_context = playwright.request.new_context(base_url="https://rahulshettyacademy.com")
         response = api_request_context.post(
             "/api/ecom/auth/login",
-            data={"userEmail": "cristiandavid1291@gmail.com", "userPassword": "Manizales2025++"}
+            data={"userEmail": user_data['username'], "userPassword": user_data['password']}
         )
         assert response.ok, "Failed to get token"
         return response.json().get("token")
     
-    def create_order(self, playwright: Playwright):
-        token = self.get_token(playwright)
+    def create_order(self, playwright: Playwright, user_data):
+        token = self.get_token(playwright, user_data)
         api_request_context = playwright.request.new_context(base_url="https://rahulshettyacademy.com")
         response = api_request_context.post(
             "/api/ecom/order/create-order",

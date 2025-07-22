@@ -1,6 +1,7 @@
 
 from playwright.sync_api import Playwright, expect
 from utils import APIUtils, Base
+from page_objects import LoginPage, DashboardPage, OrdersPage
 import pytest
 
 
@@ -11,19 +12,15 @@ def test_e2e_web_api(playwright:Playwright, user_data):
 
     #create order id
     api_utils = APIUtils()
-    order_id = api_utils.create_order(playwright)
+    order_id = api_utils.create_order(playwright, user_data)
 
     #login
-    page.goto("https://rahulshettyacademy.com/client")
-    page.locator("#userEmail").fill(user_data['username'])
-    page.locator("#userPassword").fill(user_data['password'])
-    page.get_by_role("button", name="Login").click()
-    page.get_by_role("button", name="ORDERS").click()
-    
+    login_page = LoginPage(page)
+    login_page.navigate()
+    dashboard_page = login_page.login(user_data)
+    order_page = dashboard_page.select_orders_nav_link()
+    details_order_page = order_page.select_order(order_id)
 
-    #orders history page -> order is present
-    page.locator("tr").filter(has_text=order_id).get_by_role("button", name="View").click()
+   
     # Example assertion: check if order details are visible
-    expect(page.locator(".tagline")).to_contain_text("Thank you for Shopping With Us")
-
-    
+    expect(details_order_page.get_message()).to_contain_text("Thank you for Shopping With Us")
