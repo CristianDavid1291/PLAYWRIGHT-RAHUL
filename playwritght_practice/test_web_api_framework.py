@@ -6,9 +6,7 @@ import pytest
 
 
 def test_e2e_web_api(playwright:Playwright, user_data):
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
+  
 
     #create order id
     api_utils = APIUtils()

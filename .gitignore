@@ -179,3 +179,15 @@ secrets.json
 # Test artifacts
 allure-results/
 allure-report/
+
+# HTML reports
+html-report/
+htmlreport/
+report.html
+test-report.html
+test_report.html
+*.html.report
+reports/
+test-reports/
+assets/
+
